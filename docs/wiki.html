@@ -16,10 +16,6 @@
             --primary-color: #32329f;
             --secondary-color: #61affe;
             --border-color: #e0e0e0;
-            --method-get: #61affe;
-            --method-post: #49cc90;
-            --method-put: #fca130;
-            --method-delete: #f93e3e;
             --background-color: #fafafa;
             --text-color: #3b4151;
             --header-background: var(--primary-color);
@@ -125,6 +121,108 @@
             margin: 0 auto;
             padding: 2rem;
             flex: 1;
+            display: flex;
+        }
+
+        .toc {
+            width: 250px;
+            margin-right: 2rem;
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            padding-right: 1rem;
+        }
+
+        .toc h2 {
+            font-size: 1.2rem;
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 0.25rem 0;
+            transition: color 0.2s ease;
+        }
+
+        .toc a:hover {
+            color: var(--secondary-color);
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .content h2 {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .content h3 {
+            margin-top: 2rem;
+        }
+
+        .content section {
+            margin-bottom: 2rem;
+        }
+
+        .collapsible {
+            background: var(--schema-background);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .collapsible h3 {
+            margin-top: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapsible-content {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .collapsible.open .collapsible-content {
+            display: block;
+        }
+
+        .collapsible::after {
+            content: '+';
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapsible.open::after {
+            content: '-';
+        }
+
+        pre {
+            background: var(--schema-background);
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+
+        code {
+            font-family: monospace;
         }
 
         .footer {
@@ -169,6 +267,24 @@
             fill: currentColor;
         }
 
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .toc {
+                width: 100%;
+                margin-bottom: 2rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 1rem;
+            }
+
+            .content {
+                width: 100%;
+            }
+        }
+
         @media (max-width: 768px) {
             .header-links, .footer-links {
                 flex-direction: column;
@@ -205,12 +321,64 @@
         .toast.show {
             opacity: 1;
         }
+
+        /* Syntax Highlighting */
+        pre code {
+            display: block;
+            overflow-x: auto;
+            padding: 1rem;
+            background: var(--schema-background);
+            border-radius: 4px;
+        }
+
+        .hljs {
+            color: var(--text-color);
+        }
+
+        /* Additional styling for code elements */
+        .hljs-keyword,
+        .hljs-selector-tag,
+        .hljs-subst {
+            color: #d73a49;
+        }
+
+        .hljs-string,
+        .hljs-title,
+        .hljs-name,
+        .hljs-type,
+        .hljs-attribute,
+        .hljs-symbol,
+        .hljs-bullet,
+        .hljs-addition,
+        .hljs-variable,
+        .hljs-template-tag,
+        .hljs-template-variable {
+            color: #032f62;
+        }
+
+        .hljs-comment,
+        .hljs-quote,
+        .hljs-deletion {
+            color: #6a737d;
+        }
+
+        .hljs-meta {
+            color: #005cc5;
+        }
+
+        .hljs-emphasis {
+            font-style: italic;
+        }
+
+        .hljs-strong {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="header" role="banner">
         <div class="header-content">
-            <h1>API Documentation</h1>
+            <h1>API Documentation Wiki</h1>
             <div class="header-links">
                 <a href="index.html">Home</a>
                 <a href="contacts.html">Contacts</a>
@@ -229,50 +397,86 @@
     </div>
 
     <main class="container" role="main">
-        <h2>Wiki</h2>
+        <nav class="toc">
+            <h2>Contents</h2>
+            <ul id="toc-list">
+                <!-- Dynamic TOC will be generated here -->
+            </ul>
+        </nav>
 
-        <section>
-            <h3>Introduction</h3>
-            <p>Welcome to the API Documentation Wiki. This section provides comprehensive information about the API endpoints, usage guidelines, best practices, and more.</p>
-        </section>
+        <div class="content">
+            <h2>Wiki</h2>
 
-        <section>
-            <h3>Authentication</h3>
-            <p>Our API uses token-based authentication. To access the endpoints, you need to include your API token in the request headers.</p>
-            <div class="schema">
-                <pre>{
+            <section id="introduction">
+                <h3>Introduction</h3>
+                <p>Welcome to the API Documentation Wiki. This section provides comprehensive information about the API endpoints, usage guidelines, best practices, and more.</p>
+            </section>
+
+            <section id="authentication" class="collapsible">
+                <h3>Authentication</h3>
+                <div class="collapsible-content">
+                    <p>Our API uses token-based authentication. To access the endpoints, you need to include your API token in the request headers.</p>
+                    <pre><code class="json">{
     "Authorization": "Bearer YOUR_API_TOKEN"
-}</pre>
-            </div>
-        </section>
+}</code></pre>
+                    <p>You can obtain your API token by registering on our <a href="https://api.example.com/register">developer portal</a>.</p>
+                </div>
+            </section>
 
-        <section>
-            <h3>Rate Limiting</h3>
-            <p>To ensure fair usage, the API enforces rate limiting. The default limit is 100 requests per minute.</p>
-        </section>
+            <section id="rate-limiting" class="collapsible">
+                <h3>Rate Limiting</h3>
+                <div class="collapsible-content">
+                    <p>To ensure fair usage, the API enforces rate limiting. The default limit is 100 requests per minute.</p>
+                    <p>If you exceed the rate limit, you will receive a <code>429 Too Many Requests</code> response. Consider implementing exponential backoff in your application to handle rate limit responses gracefully.</p>
+                </div>
+            </section>
 
-        <section>
-            <h3>Error Handling</h3>
-            <p>The API uses standard HTTP status codes to indicate the success or failure of an API request. Below are some common error codes:</p>
-            <ul>
-                <li><strong>400 Bad Request:</strong> The request was invalid or cannot be otherwise served.</li>
-                <li><strong>401 Unauthorized:</strong> Authentication failed or user does not have permissions for the desired action.</li>
-                <li><strong>404 Not Found:</strong> The requested resource does not exist.</li>
-                <li><strong>500 Internal Server Error:</strong> An error occurred on the server.</li>
-            </ul>
-        </section>
+            <section id="error-handling" class="collapsible">
+                <h3>Error Handling</h3>
+                <div class="collapsible-content">
+                    <p>The API uses standard HTTP status codes to indicate the success or failure of an API request. Below are some common error codes:</p>
+                    <ul>
+                        <li><strong>400 Bad Request:</strong> The request was invalid or cannot be otherwise served.</li>
+                        <li><strong>401 Unauthorized:</strong> Authentication failed or user does not have permissions for the desired action.</li>
+                        <li><strong>403 Forbidden:</strong> You do not have access to this resource.</li>
+                        <li><strong>404 Not Found:</strong> The requested resource does not exist.</li>
+                        <li><strong>429 Too Many Requests:</strong> You have exceeded the rate limit.</li>
+                        <li><strong>500 Internal Server Error:</strong> An error occurred on the server.</li>
+                    </ul>
+                    <p>Always check the response body for more details about the error.</p>
+                </div>
+            </section>
 
-        <section>
-            <h3>Best Practices</h3>
-            <ul>
-                <li>Always handle possible errors gracefully in your application.</li>
-                <li>Cache responses when appropriate to reduce the number of API calls.</li>
-                <li>Respect the rate limits to avoid being temporarily blocked.</li>
-                <li>Keep your API tokens secure and do not expose them in client-side code.</li>
-            </ul>
-        </section>
+            <section id="best-practices" class="collapsible">
+                <h3>Best Practices</h3>
+                <div class="collapsible-content">
+                    <ul>
+                        <li>Always handle possible errors gracefully in your application.</li>
+                        <li>Cache responses when appropriate to reduce the number of API calls.</li>
+                        <li>Respect the rate limits to avoid being temporarily blocked.</li>
+                        <li>Keep your API tokens secure and do not expose them in client-side code.</li>
+                        <li>Use HTTPS to ensure secure communication with the API.</li>
+                        <li>Follow RESTful principles when designing your API interactions.</li>
+                    </ul>
+                </div>
+            </section>
 
-        <!-- Add more wiki sections as needed -->
+            <section id="faq" class="collapsible">
+                <h3>Frequently Asked Questions</h3>
+                <div class="collapsible-content">
+                    <h4>How do I reset my API token?</h4>
+                    <p>You can reset your API token by logging into your account on our developer portal and navigating to the "API Tokens" section.</p>
+
+                    <h4>Can I share my API token with others?</h4>
+                    <p>No, your API token is personal and should not be shared. Sharing your token may compromise your account's security.</p>
+
+                    <h4>What formats does the API support?</h4>
+                    <p>The API supports JSON for both requests and responses.</p>
+                </div>
+            </section>
+
+            <!-- Add more wiki sections as needed -->
+        </div>
     </main>
 
     <div class="toast" role="alert" aria-live="polite"></div>
@@ -289,7 +493,14 @@
         </div>
     </footer>
 
+    <!-- Include a lightweight syntax highlighting library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script>
+        // Initialize syntax highlighting
+        document.querySelectorAll('pre code').forEach((el) => {
+            hljs.highlightElement(el);
+        });
+
         function copyToClipboard(button) {
             const schemaDiv = button.parentElement;
             const codeContent = schemaDiv.textContent.trim();
@@ -336,6 +547,40 @@
                 const themeIcon = document.getElementById('theme-icon');
                 themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
             }
+
+            // Generate Table of Contents
+            const tocList = document.getElementById('toc-list');
+            const headers = document.querySelectorAll('.content section h3');
+            headers.forEach(header => {
+                const section = header.parentElement;
+                const id = section.id;
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${id}`;
+                a.textContent = header.textContent;
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+
+            // Smooth scrolling for internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Collapsible sections
+            const collapsibleHeaders = document.querySelectorAll('.collapsible h3');
+            collapsibleHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const section = this.parentElement;
+                    section.classList.toggle('open');
+                });
+            });
         })();
     </script>
 </body>
