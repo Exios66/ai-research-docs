@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and favicon -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta description="API documentation with Swagger-like design, including endpoints, schemas, and models.">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#1b1b1b">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <title>API Documentation</title>
+    <style>
+        :root {
+            --primary-color: #1b1b1b;
+            --secondary-color: #4990e2;
+            --border-color: #e0e0e0;
+            --method-get: #61affe;
+            --method-post: #49cc90;
+            --method-put: #fca130;
+            --method-delete: #f93e3e;
+            --background-color: #ffffff;
+            --text-color: #1b1b1b;
+            --header-background: var(--primary-color);
+            --header-text-color: #ffffff;
+            --footer-background: var(--primary-color);
+            --footer-text-color: #ffffff;
+            --schema-background: #f8f8f8;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #1b1b1b;
+            --text-color: #ffffff;
+            --header-background: #000000;
+            --header-text-color: #ffffff;
+            --footer-background: #000000;
+            --footer-text-color: #ffffff;
+            --schema-background: #2b2b2b;
+            --border-color: #3a3a3a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 120px;
+        }
+
+        .header {
+            background: var(--header-background);
+            color: var(--header-text-color);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .header a {
+            color: var(--header-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .header a:hover {
+            color: var(--secondary-color);
+        }
+
+        .header svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--header-text-color);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .endpoint {
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .endpoint-header {
+            padding: 1rem;
+            background: #fafafa;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        [data-theme="dark"] .endpoint-header {
+            background: #2b2b2b;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 3px;
+            font-weight: bold;
+            color: white;
+            margin-right: 1rem;
+            text-transform: uppercase;
+        }
+
+        .method.get { background: var(--method-get); }
+        .method.post { background: var(--method-post); }
+        .method.put { background: var(--method-put); }
+        .method.delete { background: var(--method-delete); }
+
+        .endpoint-content {
+            padding: 1rem;
+        }
+
+        .schema {
+            background: var(--schema-background);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            position: relative;
+            overflow: auto;
+            color: var(--text-color);
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .copy-button:hover {
+            background-color: #3a7bc0;
+        }
+
+        .copy-button svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .parameters table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            color: var(--text-color);
+        }
+
+        .parameters th, .parameters td {
+            text-align: left;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .parameters th {
+            background: #f8f8f8;
+        }
+
+        [data-theme="dark"] .parameters th {
+            background: #2b2b2b;
+        }
+
+        .models {
+            margin-top: 3rem;
+        }
+
+        .footer {
+            background: var(--footer-background);
+            color: var(--footer-text-color);
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer a {
+            color: var(--footer-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .header-links, .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+
+            body {
+                padding-top: 160px;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" role="banner">
+        <div class="header-content">
+            <h1>API Documentation</h1>
+            <div class="header-links">
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                    <!-- GitHub Icon -->
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 0C5.38 0 0 5.38 0 12a12 12 0 008.21 11.43c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.41-4.04-1.41-.54-1.37-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.82 2.8 1.3 3.48.99.11-.77.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.17 0 0 1-.32 3.3 1.24a11.5 11.5 0 016 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.65.25 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.6-2.8 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.2.7.82.58A12 12 0 0024 12c0-6.62-5.38-12-12-12z"/>
+                    </svg>
+                    Repository
+                </a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <svg id="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <!-- Light Mode Icon -->
+                        <path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>
+                    </svg>
+                    Theme
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container" role="main">
+        <h2>Endpoints</h2>
+
+        <!-- Example Endpoint: GET /api/users -->
+        <div class="endpoint">
+            <div class="endpoint-header">
+                <span class="method get">GET</span>
+                <span class="path">/api/users</span>
+            </div>
+            <div class="endpoint-content">
+                <h3>Get Users</h3>
+                <p>Retrieve a list of all users.</p>
+
+                <h4>Parameters</h4>
+                <div class="parameters">
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>In</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>page</td>
+                            <td>integer</td>
+                            <td>query</td>
+                            <td>No</td>
+                            <td>Page number for pagination</td>
+                        </tr>
+                        <tr>
+                            <td>limit</td>
+                            <td>integer</td>
+                            <td>query</td>
+                            <td>No</td>
+                            <td>Number of results per page</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h4>Response Schema</h4>
+                <div class="schema">
+<button class="copy-button" onclick="copyToClipboard(this)">
+    <svg viewBox="0 0 24 24">
+        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+    </svg>
+    Copy
+</button>
+{
+  "type": "object",
+  "properties": {
+    "users": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/User"
+      }
+    },
+    "total": {
+      "type": "integer",
+      "description": "Total number of users"
+    },
+    "page": {
+      "type": "integer",
+      "description": "Current page number"
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Number of results per page"
+    }
+  }
+}</div>
+
+                <h4>Example Response</h4>
+                <div class="schema">
+<button class="copy-button" onclick="copyToClipboard(this)">
+    <svg viewBox="0 0 24 24">
+        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+    </svg>
+    Copy
+</button>
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane@example.com"
+    }
+  ],
+  "total": 2,
+  "page": 1,
+  "limit": 10
+}</div>
+            </div>
+        </div>
+
+        <!-- Additional endpoints can be added here following the same structure -->
+
+        <div class="models">
+            <h2>Models</h2>
+
+            <h3>User</h3>
+            <div class="schema">
+<button class="copy-button" onclick="copyToClipboard(this)">
+    <svg viewBox="0 0 24 24">
+        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+    </svg>
+    Copy
+</button>
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "User ID"
+    },
+    "name": {
+      "type": "string",
+      "description": "Full name of the user"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email address"
+    }
+  },
+  "required": ["id", "name", "email"]
+}</div>
+        </div>
+    </main>
+
+    <div class="toast" role="alert" aria-live="polite"></div>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository">
+                    <!-- GitHub Icon -->
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 0C5.38 0 0 5.38 0 12a12 12 0 008.21 11.43c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.41-4.04-1.41-.54-1.37-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.82 2.8 1.3 3.48.99.11-.77.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.17 0 0 1-.32 3.3 1.24a11.5 11.5 0 016 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.65.25 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.6-2.8 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.2.7.82.58A12 12 0 0024 12c0-6.62-5.38-12-12-12z"/>
+                    </svg>
+                    GitHub Repository
+                </a>
+                <!-- Additional footer links can be added here -->
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyToClipboard(button) {
+            const schemaDiv = button.parentElement;
+            const codeContent = schemaDiv.textContent.trim();
+
+            navigator.clipboard.writeText(codeContent).then(function() {
+                showToast('Copied to clipboard!');
+            }, function(err) {
+                showToast('Failed to copy text.');
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.querySelector('.toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.innerHTML = '<path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        }
+
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                const themeIcon = document.getElementById('theme-icon');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        })();
+    </script>
+</body>
+</html>
