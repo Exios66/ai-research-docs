@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and favicon -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta description="API Documentation - Hyperlinks">
+    <meta name="author" content="Your Company Name">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <title>API Documentation - Hyperlinks</title>
+    <style>
+        /* CSS Variables for Light and Dark Themes */
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #ffffff;
+            --text-color: #333333;
+            --border-color: #dddddd;
+            --schema-background: #f9f9f9;
+            --toast-background: rgba(0, 0, 0, 0.8);
+            --toast-text-color: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #2980b9;
+            --secondary-color: #27ae60;
+            --background-color: #2c3e50;
+            --text-color: #ecf0f1;
+            --border-color: #7f8c8d;
+            --schema-background: #34495e;
+            --toast-background: rgba(255, 255, 255, 0.9);
+            --toast-text-color: #2c3e50;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .header .theme-toggle {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* Container */
+        .container {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            text-align: center;
+            padding: 1rem 2rem;
+        }
+
+        /* Additional styles for the hyperlinks page */
+        .search-bar {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--secondary-color);
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .link-card {
+            background: var(--schema-background);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .link-card h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .link-card p {
+            flex: 1;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .link-card a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+            align-self: flex-start;
+            font-size: 0.9rem;
+        }
+
+        .link-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast Styles */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--toast-background);
+            color: var(--toast-text-color);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <header class="header" role="banner">
+        <div class="logo">API Docs</div>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">🌙 Dark Mode</button>
+    </header>
+
+    <main class="container" role="main">
+        <h2>Useful Hyperlinks</h2>
+        <p>Below is a collection of hyperlinks to resources, documentation, and tools that may be helpful.</p>
+
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search links..." aria-label="Search links">
+        </div>
+
+        <div class="link-grid" id="link-grid">
+            <!-- Link cards will be generated here -->
+        </div>
+    </main>
+
+    <div class="toast" role="alert" aria-live="polite"></div>
+
+    <footer class="footer" role="contentinfo">
+        &copy; 2023 Your Company Name. All rights reserved.
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeToggleButton(currentTheme);
+
+        themeToggleButton.addEventListener('click', () => {
+            const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            updateThemeToggleButton(theme);
+            showToast(`Switched to ${theme} mode`);
+        });
+
+        function updateThemeToggleButton(theme) {
+            if (theme === 'dark') {
+                themeToggleButton.textContent = '☀️ Light Mode';
+            } else {
+                themeToggleButton.textContent = '🌙 Dark Mode';
+            }
+        }
+
+        // Toast Notification Function
+        function showToast(message) {
+            const toast = document.querySelector('.toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        (function() {
+            // Link Data
+            const links = [
+                {
+                    title: 'Official Documentation',
+                    description: 'Access the official API documentation for detailed guides and references.',
+                    url: 'https://api.example.com/docs',
+                    category: 'Documentation'
+                },
+                {
+                    title: 'Developer Forum',
+                    description: 'Join the community forum to discuss with other developers.',
+                    url: 'https://forum.example.com',
+                    category: 'Community'
+                },
+                {
+                    title: 'API Status Dashboard',
+                    description: 'Check the real-time status of the API services.',
+                    url: 'https://status.example.com',
+                    category: 'Tools'
+                },
+                {
+                    title: 'GitHub Repository',
+                    description: 'View the source code and contribute to the project.',
+                    url: 'https://github.com/example/repository',
+                    category: 'Repository'
+                },
+                {
+                    title: 'API Changelog',
+                    description: 'Stay updated with the latest changes and updates to the API.',
+                    url: 'https://api.example.com/changelog',
+                    category: 'Documentation'
+                },
+                {
+                    title: 'Support Center',
+                    description: 'Get help and find answers to your questions.',
+                    url: 'https://support.example.com',
+                    category: 'Support'
+                },
+                // Add more links as needed
+            ];
+
+            const linkGrid = document.getElementById('link-grid');
+
+            function renderLinks(filter = '') {
+                linkGrid.innerHTML = '';
+                const filteredLinks = links.filter(link => 
+                    link.title.toLowerCase().includes(filter.toLowerCase()) ||
+                    link.description.toLowerCase().includes(filter.toLowerCase()) ||
+                    link.category.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                if (filteredLinks.length === 0) {
+                    linkGrid.innerHTML = '<p>No links found.</p>';
+                    return;
+                }
+
+                filteredLinks.forEach(link => {
+                    const card = document.createElement('div');
+                    card.className = 'link-card';
+                    card.innerHTML = `
+                        <h3>${link.title}</h3>
+                        <p>${link.description}</p>
+                        <a href="${link.url}" target="_blank" rel="noopener noreferrer">Visit</a>
+                    `;
+                    linkGrid.appendChild(card);
+                });
+            }
+
+            // Initial render
+            renderLinks();
+
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                renderLinks(query);
+            });
+        })();
+    </script>
+</body>
+</html>
