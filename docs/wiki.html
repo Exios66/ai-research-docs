@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and favicon -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta description="API Documentation Wiki - Comprehensive information about API endpoints, usage, and best practices.">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#1b1b1b">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <title>API Documentation - Wiki</title>
+    <style>
+        /* Same styles as provided in the template */
+        :root {
+            --primary-color: #32329f;
+            --secondary-color: #61affe;
+            --border-color: #e0e0e0;
+            --method-get: #61affe;
+            --method-post: #49cc90;
+            --method-put: #fca130;
+            --method-delete: #f93e3e;
+            --background-color: #fafafa;
+            --text-color: #3b4151;
+            --header-background: var(--primary-color);
+            --header-text-color: #ffffff;
+            --footer-background: var(--primary-color);
+            --footer-text-color: #ffffff;
+            --schema-background: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #303030;
+            --text-color: #ffffff;
+            --header-background: #202020;
+            --header-text-color: #ffffff;
+            --footer-background: #202020;
+            --footer-text-color: #ffffff;
+            --schema-background: #424242;
+            --border-color: #555555;
+        }
+
+        body {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px; /* Account for fixed header */
+        }
+
+        .header {
+            background: var(--header-background);
+            color: var(--header-text-color);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header a {
+            color: var(--header-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .header a:hover {
+            color: var(--secondary-color);
+        }
+
+        .header svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--header-text-color);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .footer {
+            background: var(--footer-background);
+            color: var(--footer-text-color);
+            padding: 1rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer a {
+            color: var(--footer-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .header-links, .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+
+            body {
+                padding-top: 120px;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" role="banner">
+        <div class="header-content">
+            <h1>API Documentation</h1>
+            <div class="header-links">
+                <a href="index.html">Home</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="sitemap.html">Site Map</a>
+                <a href="wiki.html">Wiki</a>
+                <a href="hyperlinks.html">Hyperlinks</a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <svg id="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <!-- Light Mode Icon -->
+                        <path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>
+                    </svg>
+                    Theme
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container" role="main">
+        <h2>Wiki</h2>
+
+        <section>
+            <h3>Introduction</h3>
+            <p>Welcome to the API Documentation Wiki. This section provides comprehensive information about the API endpoints, usage guidelines, best practices, and more.</p>
+        </section>
+
+        <section>
+            <h3>Authentication</h3>
+            <p>Our API uses token-based authentication. To access the endpoints, you need to include your API token in the request headers.</p>
+            <div class="schema">
+                <pre>{
+    "Authorization": "Bearer YOUR_API_TOKEN"
+}</pre>
+            </div>
+        </section>
+
+        <section>
+            <h3>Rate Limiting</h3>
+            <p>To ensure fair usage, the API enforces rate limiting. The default limit is 100 requests per minute.</p>
+        </section>
+
+        <section>
+            <h3>Error Handling</h3>
+            <p>The API uses standard HTTP status codes to indicate the success or failure of an API request. Below are some common error codes:</p>
+            <ul>
+                <li><strong>400 Bad Request:</strong> The request was invalid or cannot be otherwise served.</li>
+                <li><strong>401 Unauthorized:</strong> Authentication failed or user does not have permissions for the desired action.</li>
+                <li><strong>404 Not Found:</strong> The requested resource does not exist.</li>
+                <li><strong>500 Internal Server Error:</strong> An error occurred on the server.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Best Practices</h3>
+            <ul>
+                <li>Always handle possible errors gracefully in your application.</li>
+                <li>Cache responses when appropriate to reduce the number of API calls.</li>
+                <li>Respect the rate limits to avoid being temporarily blocked.</li>
+                <li>Keep your API tokens secure and do not expose them in client-side code.</li>
+            </ul>
+        </section>
+
+        <!-- Add more wiki sections as needed -->
+    </main>
+
+    <div class="toast" role="alert" aria-live="polite"></div>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="sitemap.html">Site Map</a>
+                <a href="wiki.html">Wiki</a>
+                <a href="hyperlinks.html">Hyperlinks</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyToClipboard(button) {
+            const schemaDiv = button.parentElement;
+            const codeContent = schemaDiv.textContent.trim();
+
+            navigator.clipboard.writeText(codeContent).then(function() {
+                showToast('Copied to clipboard!');
+            }, function(err) {
+                showToast('Failed to copy text.');
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.querySelector('.toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.innerHTML = '<path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        }
+
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                const themeIcon = document.getElementById('theme-icon');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        })();
+    </script>
+</body>
+</html>
