@@ -1,0 +1,1023 @@
+Please comprehensively expand and prepare the provided HTML for full deployment production grade quality with dynamic ui and all features of ultra modern website design:
+
+contacts.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and favicon -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta description="Contact page for API Documentation. Reach out for support, feedback, or inquiries.">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#1b1b1b">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <title>API Documentation - Contacts</title>
+    <style>
+        /* Same styles as provided in the template */
+        :root {
+            --primary-color: #32329f;
+            --secondary-color: #61affe;
+            --border-color: #e0e0e0;
+            --method-get: #61affe;
+            --method-post: #49cc90;
+            --method-put: #fca130;
+            --method-delete: #f93e3e;
+            --background-color: #fafafa;
+            --text-color: #3b4151;
+            --header-background: var(--primary-color);
+            --header-text-color: #ffffff;
+            --footer-background: var(--primary-color);
+            --footer-text-color: #ffffff;
+            --schema-background: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #303030;
+            --text-color: #ffffff;
+            --header-background: #202020;
+            --header-text-color: #ffffff;
+            --footer-background: #202020;
+            --footer-text-color: #ffffff;
+            --schema-background: #424242;
+            --border-color: #555555;
+        }
+
+        body {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px; /* Account for fixed header */
+        }
+
+        .header {
+            background: var(--header-background);
+            color: var(--header-text-color);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header a {
+            color: var(--header-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .header a:hover {
+            color: var(--secondary-color);
+        }
+
+        .header svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--header-text-color);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 600px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, textarea {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: var(--schema-background);
+            color: var(--text-color);
+        }
+
+        button[type="submit"] {
+            padding: 0.75rem;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .footer {
+            background: var(--footer-background);
+            color: var(--footer-text-color);
+            padding: 1rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer a {
+            color: var(--footer-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .header-links, .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+
+            body {
+                padding-top: 120px;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" role="banner">
+        <div class="header-content">
+            <h1>API Documentation</h1>
+            <div class="header-links">
+                <a href="index.html">Home</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="sitemap.html">Site Map</a>
+                <a href="wiki.html">Wiki</a>
+                <a href="hyperlinks.html">Hyperlinks</a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <svg id="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <!-- Light Mode Icon -->
+                        <path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>
+                    </svg>
+                    Theme
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container" role="main">
+        <h2>Contact Us</h2>
+
+        <form id="contact-form" action="#" method="post">
+            <label for="name">Name<span style="color: red;">*</span></label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email<span style="color: red;">*</span></label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject">
+
+            <label for="message">Message<span style="color: red;">*</span></label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+    </main>
+
+    <div class="toast" role="alert" aria-live="polite"></div>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="sitemap.html">Site Map</a>
+                <a href="wiki.html">Wiki</a>
+                <a href="hyperlinks.html">Hyperlinks</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyToClipboard(button) {
+            const schemaDiv = button.parentElement;
+            const codeContent = schemaDiv.textContent.trim();
+
+            navigator.clipboard.writeText(codeContent).then(function() {
+                showToast('Copied to clipboard!');
+            }, function(err) {
+                showToast('Failed to copy text.');
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.querySelector('.toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.innerHTML = '<path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        }
+
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                const themeIcon = document.getElementById('theme-icon');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        })();
+
+        // Handle form submission
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            showToast('Your message has been sent!');
+            // Here you can add AJAX code to submit the form data to your server
+            this.reset();
+        });
+    </script>
+</body>
+</html>
+
+sitemap.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and favicon -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta description="Site Map for API Documentation. Navigate through all available pages and resources.">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#1b1b1b">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <title>API Documentation - Site Map</title>
+    <style>
+        /* Same styles as provided in the template */
+        :root {
+            --primary-color: #32329f;
+            --secondary-color: #61affe;
+            --border-color: #e0e0e0;
+            --method-get: #61affe;
+            --method-post: #49cc90;
+            --method-put: #fca130;
+            --method-delete: #f93e3e;
+            --background-color: #fafafa;
+            --text-color: #3b4151;
+            --header-background: var(--primary-color);
+            --header-text-color: #ffffff;
+            --footer-background: var(--primary-color);
+            --footer-text-color: #ffffff;
+            --schema-background: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #303030;
+            --text-color: #ffffff;
+            --header-background: #202020;
+            --header-text-color: #ffffff;
+            --footer-background: #202020;
+            --footer-text-color: #ffffff;
+            --schema-background: #424242;
+            --border-color: #555555;
+        }
+
+        body {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px; /* Account for fixed header */
+        }
+
+        .header {
+            background: var(--header-background);
+            color: var(--header-text-color);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header a {
+            color: var(--header-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .header a:hover {
+            color: var(--secondary-color);
+        }
+
+        .header svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--header-text-color);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        ul.sitemap {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul.sitemap li {
+            margin-bottom: 0.5rem;
+        }
+
+        ul.sitemap li a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        ul.sitemap li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer {
+            background: var(--footer-background);
+            color: var(--footer-text-color);
+            padding: 1rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer a {
+            color: var(--footer-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .header-links, .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+
+            body {
+                padding-top: 120px;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" role="banner">
+        <div class="header-content">
+            <h1>API Documentation</h1>
+            <div class="header-links">
+                <a href="index.html">Home</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="sitemap.html">Site Map</a>
+                <a href="wiki.html">Wiki</a>
+                <a href="hyperlinks.html">Hyperlinks</a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <svg id="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <!-- Light Mode Icon -->
+                        <path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>
+                    </svg>
+                    Theme
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container" role="main">
+        <h2>Site Map</h2>
+
+        <ul class="sitemap">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="contacts.html">Contacts</a></li>
+            <li><a href="sitemap.html">Site Map</a></li>
+            <li><a href="wiki.html">Wiki</a></li>
+            <li><a href="hyperlinks.html">Hyperlinks</a></li>
+            <!-- Add more links as your site grows -->
+        </ul>
+    </main>
+
+    <div class="toast" role="alert" aria-live="polite"></div>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="sitemap.html">Site Map</a>
+                <a href="wiki.html">Wiki</a>
+                <a href="hyperlinks.html">Hyperlinks</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyToClipboard(button) {
+            const schemaDiv = button.parentElement;
+            const codeContent = schemaDiv.textContent.trim();
+
+            navigator.clipboard.writeText(codeContent).then(function() {
+                showToast('Copied to clipboard!');
+            }, function(err) {
+                showToast('Failed to copy text.');
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.querySelector('.toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.innerHTML = '<path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        }
+
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                const themeIcon = document.getElementById('theme-icon');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        })();
+    </script>
+</body>
+</html>
+
+hyperlinks.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and favicon -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta description="Useful Hyperlinks for API Documentation. Access related resources and tools.">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#1b1b1b">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <title>API Documentation - Hyperlinks</title>
+    <style>
+        /* Same styles as provided in the template */
+        :root {
+            --primary-color: #32329f;
+            --secondary-color: #61affe;
+            --border-color: #e0e0e0;
+            --method-get: #61affe;
+            --method-post: #49cc90;
+            --method-put: #fca130;
+            --method-delete: #f93e3e;
+            --background-color: #fafafa;
+            --text-color: #3b4151;
+            --header-background: var(--primary-color);
+            --header-text-color: #ffffff;
+            --footer-background: var(--primary-color);
+            --footer-text-color: #ffffff;
+            --schema-background: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #303030;
+            --text-color: #ffffff;
+            --header-background: #202020;
+            --header-text-color: #ffffff;
+            --footer-background: #202020;
+            --footer-text-color: #ffffff;
+            --schema-background: #424242;
+            --border-color: #555555;
+        }
+
+        body {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px; /* Account for fixed header */
+        }
+
+        .header {
+            background: var(--header-background);
+            color: var(--header-text-color);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header a {
+            color: var(--header-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .header a:hover {
+            color: var(--secondary-color);
+        }
+
+        .header svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--header-text-color);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        ul.hyperlinks {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul.hyperlinks li {
+            margin-bottom: 0.5rem;
+        }
+
+        ul.hyperlinks li a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        ul.hyperlinks li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer {
+            background: var(--footer-background);
+            color: var(--footer-text-color);
+            padding: 1rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer a {
+            color: var(--footer-text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .header-links, .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+
+            body {
+                padding-top: 120px;
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" role="banner">
+        <div class="header-content">
+            <h1>API Documentation</h1>
+            <div class="header-links">
+                <a href="index.html">Home</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="sitemap.html">Site Map</a>
+                <a href="wiki.html">Wiki</a>
+                <a href="hyperlinks.html">Hyperlinks</a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <svg id="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <!-- Light Mode Icon -->
+                        <path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>
+                    </svg>
+                    Theme
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container" role="main">
+        <h2>Useful Hyperlinks</h2>
+
+        <ul class="hyperlinks">
+            <li><a href="https://swagger.io/" target="_blank" rel="noopener noreferrer">Swagger - API Documentation Tool</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/API" target="_blank" rel="noopener noreferrer">MDN Web APIs</a></li>
+            <li><a href="https://postman.com/" target="_blank" rel="noopener noreferrer">Postman - API Development Environment</a></li>
+            <li><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub - Code Hosting Platform</a></li>
+            <li><a href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer">Stack Overflow - Developer Community</a></li>
+            <li><a href="https://www.w3schools.com/" target="_blank" rel="noopener noreferrer">W3Schools - Web Development Tutorials</a></li>
+            <!-- Add more useful links as needed -->
+        </ul>
+    </main>
+
+    <div class="toast" role="alert" aria-live="polite"></div>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="contacts.html">Contacts</a>
+                <a href="sitemap.html">Site Map</a>
+                <a href="wiki.html">Wiki</a>
+                <a href="hyperlinks.html">Hyperlinks</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyToClipboard(button) {
+            const schemaDiv = button.parentElement;
+            const codeContent = schemaDiv.textContent.trim();
+
+            navigator.clipboard.writeText(codeContent).then(function() {
+                showToast('Copied to clipboard!');
+            }, function(err) {
+                showToast('Failed to copy text.');
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.querySelector('.toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(window.toastTimeout);
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeIcon.innerHTML = '<path d="M12 2a9.93 9.93 0 00-7.07 2.93A9.93 9.93 0 002 12a9.93 9.93 0 002.93 7.07A9.93 9.93 0 0012 22a9.93 9.93 0 007.07-2.93A9.93 9.93 0 0022 12a9.93 9.93 0 00-2.93-7.07A9.93 9.93 0 0012 2zm0 18a7.95 7.95 0 01-5.66-2.34A7.95 7.95 0 014 12a7.95 7.95 0 012.34-5.66A7.95 7.95 0 0112 4a7.95 7.95 0 015.66 2.34A7.95 7.95 0 0120 12a7.95 7.95 0 01-2.34 5.66A7.95 7.95 0 0112 20z"/>';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        }
+
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                const themeIcon = document.getElementById('theme-icon');
+                themeIcon.innerHTML = '<path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 18a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm10-8a1 1 0 01-1 1h-2a1 1 0 110-2h2a1 1 0 011 1zM4 13H2a1 1 0 110-2h2a1 1 0 110 2zm14.95 7.07a1 1 0 01-1.41 0l-1.42-1.42a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM6.05 6.05a1 1 0 01-1.41 0L3.22 4.64a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.42zm12.9-1.41a1 1 0 010 1.41L17.53 7.47a1 1 0 01-1.42-1.42l1.41-1.41a1 1 0 011.43 0zM6.05 17.95a1 1 0 01-1.41 0L3.22 16.53a1 1 0 011.42-1.42l1.41 1.41a1 1 0 010 1.43zM12 6a6 6 0 000 12 6 6 0 000-12z"/>';
+            }
+        })();
+    </script>
+</body>
+</html>
